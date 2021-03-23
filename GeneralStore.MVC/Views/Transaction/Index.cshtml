@@ -1,0 +1,52 @@
+﻿@model IEnumerable<GeneralStore.MVC.Models.Transaction>
+
+@{
+    ViewBag.Title = "Transactions";
+}
+
+<h2>List of Transactions</h2>
+
+<p>
+    @Html.ActionLink("Add a transaction", "Create")
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.DateOfTransaction)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProductId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CustomerId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Quantity)
+        </th>
+        <th></th>
+    </tr>
+</table>
+
+@foreach (var transaction in Model)
+{
+<tr>
+    <td>
+        @Html.DisplayFor(modelTransaction => transaction.DateOfTransaction)
+    </td>
+    <td>
+        @Html.DisplayFor(modelCustomer => transaction.ProductId)
+    </td>
+    <td>
+        @Html.DisplayFor(modelCustomer => transaction.CustomerId)
+    </td>
+    <td>
+        @Html.DisplayFor(modelCustomer => transaction.Quantity)
+    </td>
+    <td>
+        @Html.ActionLink("Change Order", "Edit", new { id = transaction.TransactionId }) |
+        @Html.ActionLink("Order Details", "Details", new { id = transaction.TransactionId }) |
+        @Html.ActionLink("Cancel Order", "Delete", new { id = transaction.TransactionId })
+    </td>
+</tr>
+}

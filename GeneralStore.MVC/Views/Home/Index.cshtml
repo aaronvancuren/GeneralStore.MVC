@@ -5,7 +5,7 @@
 <div class="jumbotron">
     <h1>ABC Company</h1>
     <p class="lead">Our General Store opened it's doors in 1977. Since them we have been the standard in providers of access to home-produced items, and specialty foods.</p>
-    <p>@Html.ActionLink(HttpUtility.HtmlDecode("Learn More About Us &raquo"), "About") &raquo;</p>
+    <p>@Html.ActionLink(HttpUtility.HtmlDecode("Learn More About Us &raquo;"), "About")</p>
 </div>
 
 <div class="row">
@@ -18,13 +18,15 @@
         <p>@Html.ActionLink(HttpUtility.HtmlDecode("Show Products &raquo;"), "Index", "Product", null, new { @class = "btn btn-primary btn-large"})</p>
     </div>
     <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+        <h2>Customers</h2>
+        <p>Here's a list of our best customers.</p>
+        <br /><br /><br />
+        <p>@Html.ActionLink(HttpUtility.HtmlDecode("Show Customers &raquo;"), "Index", "Customer", null, new { @class = "btn btn-primary btn-large" })</p>
     </div>
     <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+        <h2>Transactions</h2>
+        <p>Here's a list of our transactions.</p>
+        <br /><br /><br />
+        <p>@Html.ActionLink(HttpUtility.HtmlDecode("Show Transactions &raquo;"), "Index", "Transaction", null, new { @class = "btn btn-primary btn-large" })</p>
     </div>
 </div>

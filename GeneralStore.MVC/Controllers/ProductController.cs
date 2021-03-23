@@ -52,7 +52,8 @@ namespace GeneralStore.MVC.Controllers
             return View(product);
         }
 
-        // POST : Edit// Product/Edit/{id}
+        // POST : Edit
+        // Product/Edit/{id}
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Product product)
@@ -65,6 +66,24 @@ namespace GeneralStore.MVC.Controllers
             }
             return View(product);
         }
+
+        /*[HttpPut]
+        [ActionName("Restock")]
+        public async Task<IHttpActionResult> RestockProduct(int id, int amt)
+        {
+            var product = await _context.Products.FindAsync(id);
+            if (product == default)
+            {
+                return NotFound(); // 404
+            }
+            if (amt < 1)
+            {
+                return BadRequest("Amount must be at least 1");
+            }
+            product.Quantity += amt;
+            await _context.SaveChangesAsync();
+            return Ok($"{amt} {product.ProductName} added.");
+        }*/
 
         // GET : Details
         // Product/Details/{id}

@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace GeneralStore.MVC.Controllers
 {
-    public class CustomerController : Controller
+    public class TransactionController : Controller
     {
         // Add the application DB Context (link to the database)
         private ApplicationDbContext _db = new ApplicationDbContext();
@@ -18,22 +18,29 @@ namespace GeneralStore.MVC.Controllers
         public ActionResult Index()
         {
             // See below (modifying ApplicationDbContext class)
-            List<Customer> customerList = _db.Customers.ToList();
-            List<Customer> orderedList = customerList.OrderBy(cust => cust.LastName).ToList();
+            List<Transaction> transactionList = _db.Transactions.ToList();
+            List<Transaction> orderedList = transactionList.OrderBy(tran => tran.DateOfTransaction).ToList();
             return View(orderedList);
         }
 
-        // GET: Product
-        public ActionResult Create(Customer customer)
+        [HttpPost]
+        public ActionResult PurchaseProduct(Transaction transaction)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _db.Customers.Add(customer);
-                _db.SaveChanges();
-                return RedirectToAction("Index");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            _db.Transactions.Add(transaction);
+
+            var product = _db.Products.Find(transaction.ProductId);
+            product.InventoryCount -= transaction.Quantity;
+            if (product.InventoryCount < transaction.Quantity)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            return View(customer);
+            _db.SaveChanges();
+            return View(transaction);
         }
 
         // GET : Edit
@@ -44,27 +51,27 @@ namespace GeneralStore.MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Customer customer = _db.Customers.Find(id);
-            if (customer == null)
+            Transaction transaction = _db.Transactions.Find(id);
+            if (transaction == null)
             {
                 return HttpNotFound();
             }
-            return View(customer);
+            return View(transaction);
         }
 
         // POST : Edit
         // Product/Edit/{id}
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Customer customer)
+        public ActionResult Edit(Transaction transaction)
         {
             if (ModelState.IsValid)
             {
-                _db.Entry(customer).State = EntityState.Modified;
+                _db.Entry(transaction).State = EntityState.Modified;
                 _db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(customer);
+            return View(transaction);
         }
 
         // GET : Details
@@ -75,14 +82,14 @@ namespace GeneralStore.MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Customer customer = _db.Customers.Find(id);
+            Transaction transaction = _db.Transactions.Find(id);
 
-            if (customer == null)
+            if (transaction == null)
             {
                 return HttpNotFound();
             }
 
-            return View(customer);
+            return View(transaction);
         }
 
         // GET: Delete
@@ -93,12 +100,12 @@ namespace GeneralStore.MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Customer customer = _db.Customers.Find(id);
-            if (customer == null)
+            Transaction transaction = _db.Transactions.Find(id);
+            if (transaction == null)
             {
                 return HttpNotFound();
             }
-            return View(customer);
+            return View(transaction);
         }
 
         // POST : Delete
@@ -107,8 +114,8 @@ namespace GeneralStore.MVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
         {
-            Customer customer = _db.Customers.Find(id);
-            _db.Customers.Remove(customer);
+            Transaction transaction = _db.Transactions.Find(id);
+            _db.Transactions.Remove(transaction);
             _db.SaveChanges();
             return RedirectToAction("Index");
         }

@@ -10,21 +10,18 @@ namespace GeneralStore.MVC.Models
     public class Transaction
     {
         // Transaction table is a "Joining Table"
-        // Because it connects two other tables (Product and Customer) with inner joins (foreign keys)
 
         [Key]
-        public int Id { get; set; }
+        public int TransactionId { get; set; }
 
         [DataType(DataType.DateTime)]
         public DateTime DateOfTransaction { get; set; }
 
-        // Foreign Key represents an "INNER JOIN"
         [Required]
-        [ForeignKey(nameof(Product))]
         public int ProductId { get; set; }
+        [ForeignKey(nameof(ProductId))]
         public virtual Product Product { get; set; }
 
-        // This sets up the exact same type of relationship, just does it differently
         [Required]
         public int CustomerId { get; set; }
         [ForeignKey(nameof(CustomerId))]
