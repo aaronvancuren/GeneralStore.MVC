@@ -8,6 +8,7 @@ namespace GeneralStore.MVC.Models
 {
     public class Product
     {
+        [Key]
         public int ProductId { get; set; }
 
         [Required]

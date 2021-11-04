@@ -17,14 +17,20 @@ namespace GeneralStore.MVC.Models
         [DataType(DataType.DateTime)]
         public DateTime DateOfTransaction { get; set; }
 
+        // Reflection of the [Key] Property in the Product Table
         [Required]
+        [ForeignKey(nameof(Product))]
         public int ProductId { get; set; }
-        [ForeignKey(nameof(ProductId))]
+
+        // Navigation to Product Table
         public virtual Product Product { get; set; }
 
+        // Reflection of the [Key] Property in the Product Table
         [Required]
+        [ForeignKey(nameof(Customer))]
         public int CustomerId { get; set; }
-        [ForeignKey(nameof(CustomerId))]
+
+        // Navigation to Customer Table
         public virtual Customer Customer { get; set; }
 
         [Required]

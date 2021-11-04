@@ -14,7 +14,7 @@ namespace GeneralStore.MVC.Controllers
         // Add the application DB Context (link to the database)
         private ApplicationDbContext _db = new ApplicationDbContext();
 
-        // GET: Product
+        // GET: Transactions
         public ActionResult Index()
         {
             // See below (modifying ApplicationDbContext class)
@@ -23,28 +23,35 @@ namespace GeneralStore.MVC.Controllers
             return View(orderedList);
         }
 
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        // GET: Transaction
         [HttpPost]
-        public ActionResult PurchaseProduct(Transaction transaction)
+        public ActionResult Create(Transaction transaction)
         {
             if (!ModelState.IsValid)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             _db.Transactions.Add(transaction);
 
             var product = _db.Products.Find(transaction.ProductId);
-            product.InventoryCount -= transaction.Quantity;
             if (product.InventoryCount < transaction.Quantity)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
+            product.InventoryCount -= transaction.Quantity;
             _db.SaveChanges();
             return View(transaction);
         }
 
         // GET : Edit
-        // Product/Edit/{id}
+        // Transaction/Edit/{id}
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -60,7 +67,7 @@ namespace GeneralStore.MVC.Controllers
         }
 
         // POST : Edit
-        // Product/Edit/{id}
+        // Transaction/Edit/{id}
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Transaction transaction)
@@ -75,7 +82,7 @@ namespace GeneralStore.MVC.Controllers
         }
 
         // GET : Details
-        // Product/Details/{id}
+        // Transaction/Details/{id}
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -93,7 +100,7 @@ namespace GeneralStore.MVC.Controllers
         }
 
         // GET: Delete
-        // Product/Delete/{id}
+        // Transaction/Delete/{id}
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -109,7 +116,7 @@ namespace GeneralStore.MVC.Controllers
         }
 
         // POST : Delete
-        // Product/Delete/{id}
+        // Transaction/Delete/{id}
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
